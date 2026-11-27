@@ -1,8 +1,14 @@
 import { Download, Menu } from 'lucide-react';
 import { NavSection } from '../types/benchmark';
+import {
+  CorporateNavSection,
+  ResearchWorkspace,
+} from '../types/corporateBenchmark';
 
 interface TopBarProps {
+  workspace: ResearchWorkspace;
   activeSection: NavSection;
+  activeCorporateSection: CorporateNavSection;
   onOpenMobileMenu: () => void;
   onDownloadExcel: () => void;
   isExporting: boolean;
@@ -16,12 +22,28 @@ const SECTION_TITLES: Record<NavSection, string> = {
   insights: 'Insight & Rekomendasi',
 };
 
+const CORPORATE_TITLES: Record<CorporateNavSection, string> = {
+  'corp-programs': 'Benchmark Program Perusahaan',
+  'corp-schedule': 'Jadwal Pelatihan',
+  'corp-comparison': 'Perbandingan Perusahaan',
+  'corp-insights': 'Insight & Rekomendasi',
+};
+
 export function TopBar({
+  workspace,
   activeSection,
+  activeCorporateSection,
   onOpenMobileMenu,
   onDownloadExcel,
   isExporting,
 }: TopBarProps) {
+  const workspaceLabel =
+    workspace === 'corporate' ? 'Perusahaan Sawit' : 'Institusi & Taruna';
+  const sectionTitle =
+    workspace === 'corporate'
+      ? CORPORATE_TITLES[activeCorporateSection]
+      : SECTION_TITLES[activeSection];
+
   return (
     <header className="sticky top-0 z-30 h-16 bg-white/95 backdrop-blur-xs border-b border-[#E2E7E4] px-4 sm:px-8 flex items-center justify-between gap-4">
       <div className="flex items-center gap-3 min-w-0">
@@ -36,13 +58,13 @@ export function TopBar({
 
         <div className="flex items-center gap-2 text-sm min-w-0">
           <span className="font-display font-medium text-[#64746D] whitespace-nowrap shrink-0 hidden sm:inline">
-            Workbook Riset
+            {workspaceLabel}
           </span>
           <span className="text-[#A3B1AA] hidden sm:inline" aria-hidden="true">
             /
           </span>
           <span className="font-display font-semibold text-[#111816] truncate whitespace-nowrap">
-            {SECTION_TITLES[activeSection]}
+            {sectionTitle}
           </span>
         </div>
       </div>
